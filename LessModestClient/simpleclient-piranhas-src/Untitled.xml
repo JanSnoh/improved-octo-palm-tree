@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project simpleclient-piranhas-src.zip_expanded with Jar-in-Jar Loader">
+    <!--this file was created by Eclipse Runnable JAR file Export Wizard-->
+    <!--ANT 1.7 is required-->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="/home/svk/eclipse-workspace"/>
+    <property name="dir.jarfile" value="/tmp"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/Untitled.jar">
+            <manifest>
+                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+                <attribute name="Rsrc-Main-Class" value="sc.player2019.Starter"/>
+                <attribute name="Class-Path" value="."/>
+                <attribute name="Rsrc-Class-Path" value="./ annotations-13.0.jar gradle-wrapper.jar hamcrest-core-1.3.jar jargs-1.0.jar kotlin-stdlib-1.2.61.jar kotlin-stdlib-common-1.2.61.jar kxml2-2.3.0.jar logback-classic-0.9.15.jar logback-core-0.9.15.jar piranhas_2019.jar sdk.jar slf4j-api-1.5.6.jar xmlpull-1.1.3.1.jar xpp3_min-1.1.4c.jar xstream-1.4.10.jar"/>
+            </manifest>
+            <zipfileset src="jar-in-jar-loader.zip"/>
+            <fileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/bin"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="annotations-13.0.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib/gradle-wrapper" includes="gradle-wrapper.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="hamcrest-core-1.3.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="jargs-1.0.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="kotlin-stdlib-1.2.61.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="kotlin-stdlib-common-1.2.61.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="kxml2-2.3.0.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="logback-classic-0.9.15.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="logback-core-0.9.15.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="piranhas_2019.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="sdk.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="slf4j-api-1.5.6.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="xmlpull-1.1.3.1.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="xpp3_min-1.1.4c.jar"/>
+            <zipfileset dir="${dir.workspace}/simpleclient-piranhas-src.zip_expanded/lib" includes="xstream-1.4.10.jar"/>
+        </jar>
+    </target>
+</project>
