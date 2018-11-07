@@ -25,7 +25,7 @@ public class TacticMitte extends Tactic {
 	 * 
 	 */
 	public TacticMitte() {
-		// TODO Auto-generated constructor stub
+		name = Taktikname.MITTE;
 
 	}
 

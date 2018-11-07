@@ -12,6 +12,10 @@ import sc.shared.PlayerColor;
  * @author jan
  *
  */
+
+//TODO Add more Tactics
+//TODO @jan Add minSpread Tactic
+//TODO Decide where to put 'moveToGameState' and TacticMitte.'deconcentrationOfGameState'
 public abstract class Tactic {
 	
 	Taktikname name;
@@ -21,6 +25,7 @@ public abstract class Tactic {
 	
 	
 	abstract Move getMove(GameState gs, PlayerColor c);
+	
 	protected GameState moveToGameState(GameState gs, Move m) {
 		GameState g = gs.clone();
 		try {
