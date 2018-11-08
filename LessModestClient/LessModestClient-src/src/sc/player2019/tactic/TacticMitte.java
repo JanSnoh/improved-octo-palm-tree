@@ -67,4 +67,10 @@ public class TacticMitte extends Tactic {
 		return dist;
 	}
 
+	@Override
+	float evaluateGS(GameState gs, PlayerColor c) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
