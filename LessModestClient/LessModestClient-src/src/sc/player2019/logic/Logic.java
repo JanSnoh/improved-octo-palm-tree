@@ -67,7 +67,7 @@ public class Logic implements IGameHandler {
 		log.info("Es wurde ein Zug angefordert.");
 		PlayerColor c = currentPlayer.getColor();
 		ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gameState);
-		HashMap<Move, Float> deconMoves = new HashMap<Move, Float>();
+		HashMap<Move, Double> deconMoves = new HashMap<>();
 		for (Move m : possibleMoves) {
 			deconMoves.put(m, deconcentrationOfGameState(c, moveToGameState(gameState, m)));
 		}
@@ -75,9 +75,9 @@ public class Logic implements IGameHandler {
 		Collections.sort(possibleMoves, new Comparator<Move>() {
 			@Override
 			public int compare(Move move1, Move move2) {
-				float dc1 = deconMoves.get(move1);
-				float dc2 = deconMoves.get(move2);
-				return (dc1 <= dc2) ? -1 : 1;
+				double dc1 = deconMoves.get(move1);
+				double dc2 = deconMoves.get(move2);
+				return (dc1 < dc2) ? -1 : 1;
 			}
 		});
 
@@ -118,13 +118,13 @@ public class Logic implements IGameHandler {
 
 	// Alternative deconcentration Funktion mit einfacherem Code
 	@SuppressWarnings("unused")
-	private float deconcentrationOfGameState(PlayerColor c, GameState gs) {
+	private double deconcentrationOfGameState(PlayerColor c, GameState gs) {
 		Board b = gs.getBoard();
-		float dist = 0;
+		double dist = 0;
 		for (Field f : GameRuleLogic.getOwnFields(b, c)) {
-			float dx = (float) (4.5 - f.getX());
-			float dy = (float) (4.5 - f.getY());
-			dist += Math.pow((dx * dx + dy * dy), 0.5); // Without Math everything crumbles to pieces
+			double dx = 4.5 - f.getX();
+			double dy = 4.5 - f.getY();
+			dist += Math.pow((dx * dx + dy * dy),1); // Without Math everything crumbles to pieces
 			}
 		return dist;
 	}
