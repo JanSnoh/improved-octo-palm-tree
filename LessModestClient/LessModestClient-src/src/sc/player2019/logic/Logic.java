@@ -140,12 +140,18 @@ public class Logic implements IGameHandler {
 		return g;
 	}
 	
-	//TODO add playercolor input
-	public static WinState getWinState(GameState gs) {
-		if(GameRuleLogic.isSwarmConnected(gs.getBoard(), gs.getCurrentPlayerColor())) {
+	/**TODO add playercolor input 
+	 * and add wincondition for 30 turns ended.
+	 * Also Merge WinState with WinLoose
+	 * 
+	 * @param gs
+	 * @return
+	 */
+	public static WinState getWinState(GameState gs, PlayerColor c) {
+		if(GameRuleLogic.isSwarmConnected(gs.getBoard(), c)) {
 			return WinState.WIN;
-		} else if(GameRuleLogic.isSwarmConnected(gs.getBoard(), gs.getOtherPlayerColor())) {
-			return WinState.LOSE;
+		} else if(GameRuleLogic.isSwarmConnected(gs.getBoard(), c.opponent())) {
+			return WinState.LOOSE;
 		}	else {
 			return WinState.NEUTRAL;
 		}

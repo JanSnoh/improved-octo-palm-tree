@@ -1,11 +1,10 @@
 package sc.player2019.tactic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import sc.framework.plugins.Player;
+import sc.player2019.logic.Logic;
+import sc.player2019.logic.WinState;
 import sc.plugin2019.GameState;
 import sc.plugin2019.Move;
 import sc.plugin2019.util.GameRuleLogic;
@@ -40,25 +39,31 @@ public class MoveChooser {
 	 * @param gamestate
 	 * @return value of the gamestate
 	 */
-	public static Triple<WinLoose, Double, Move> evaluateGamestate(GameState gamestate) {
-		Player winner = gamestate.getWinner();//TODO how to to this??? assumes that it returns null if there isn't a winner
-		Player currentPlayer = gamestate.getCurrentPlayer();
-		WinLoose wl;
-		if (winner == null) {
-			wl = WinLoose.NEUTRAL;
-			double rating = 0;
+	public static Triple<WinState, Double, Move> evaluateGamestate(GameState gamestate) {
+		PlayerColor currentPlayer = gamestate.getCurrentPlayerColor();
+		WinState winstate = Logic.getWinState(gamestate, currentPlayer);
+		double rating = 0;
+		switch(winstate) {
+		case NEUTRAL:
+			rating = 0;
 			double devider = 0;
 			for(Map.Entry<Tactic, Double> entry : tacticsAndImportance.entrySet()) {
 				rating += entry.getValue() * entry.getKey().tacticRatesGameState(gamestate); 
 				devider += entry.getValue();
 			}
-			rating /= devider;
-			return new Triple<WinLoose, Double, Move>(wl,rating,null);
+			rating /= devider;//normalize rating so that importance = 1
+			break;
 			
-		}else {
-			return (winner == currentPlayer)? new Triple<WinLoose, Double, Move>(WinLoose.WIN,(double)100,null) : //Case win
-											  new Triple<WinLoose, Double, Move>(WinLoose.LOOSE,(double)100,null); //Case loose
+		case WIN:
+			rating = 100;// max value
+			break;
+			
+		case LOOSE:
+			rating = 0;// min value
 		}
+			
+		return new Triple<WinState, Double, Move>(winstate,rating,null);
+		
 	}
 
 	/**
@@ -72,20 +77,9 @@ public class MoveChooser {
 	 *         third: What Move leads to the best outcome
 	 * 
 	 */
-	public static Triple<WinLoose, Double, Move> alphaBeta(GameState gametate, int depth) {
+	public static Triple<WinState, Double, Move> alphaBeta(GameState gametate, int depth) {
 		return null;
 	}
-	/*
-	 * public static double[] evaluateMoves(GameState gs, PlayerColor c){
-	 * ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gs); double[]
-	 * indecency = new double[possibleMoves.size()]; for (int i=0;
-	 * i<possibleMoves.size(); i++){ GameState copy = Tactic.moveToGameState(gs,
-	 * possibleMoves.get(i)); for(int j=0; j < tactics.length;j++){ indecency[i]+=
-	 * importance[j] * tactics[j].evaluateGS(copy, c); } } return indecency;
-	 * 
-	 * 
-	 * }
-	 */
 
 	public static void updateImportance() {
 
@@ -93,9 +87,6 @@ public class MoveChooser {
 
 }
 
-enum WinLoose {
-	WIN, LOOSE, NEUTRAL;
-}
 
 
 class Triple<A, B, C> {
