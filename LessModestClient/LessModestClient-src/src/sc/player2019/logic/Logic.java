@@ -139,5 +139,21 @@ public class Logic implements IGameHandler {
 		}
 		return g;
 	}
+	
+	//TODO add playercolor input
+	public static WinState getWinState(GameState gs) {
+		if(GameRuleLogic.isSwarmConnected(gs.getBoard(), gs.getCurrentPlayerColor())) {
+			return WinState.WIN;
+		} else if(GameRuleLogic.isSwarmConnected(gs.getBoard(), gs.getOtherPlayerColor())) {
+			return WinState.LOSE;
+		}	else {
+			return WinState.NEUTRAL;
+		}
+		
+		
+	
+	}
+	
+	
 
 }
