@@ -142,7 +142,7 @@ public class Logic implements IGameHandler {
 	
 	/**TODO add playercolor input 
 	 * and add wincondition for 30 turns ended.
-	 * Also Merge WinState with WinLoose
+	 * !!!!!!!!
 	 * 
 	 * @param gs
 	 * @return
