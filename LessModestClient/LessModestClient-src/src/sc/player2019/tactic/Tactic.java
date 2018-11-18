@@ -22,7 +22,12 @@ public abstract class Tactic {
 	
 	Tactic(){
 	}
-	
+	/**
+	 * @author Kajus
+	 * @param gamestate
+	 * @return the rating of given gamestate in the range from 0 to 100 where 0 is the worst
+	 */
+	abstract double tacticRatesGameState(GameState gamestate);
 	
 	abstract Move getMove(GameState gs, PlayerColor c);
 	

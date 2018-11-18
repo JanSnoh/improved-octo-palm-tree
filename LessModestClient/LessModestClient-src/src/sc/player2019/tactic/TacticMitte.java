@@ -67,4 +67,10 @@ public class TacticMitte extends Tactic {
 		return dist;
 	}
 
+	@Override
+	double tacticRatesGameState(GameState gamestate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

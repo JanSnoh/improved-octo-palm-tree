@@ -3,7 +3,9 @@ package sc.player2019.tactic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import sc.framework.plugins.Player;
 import sc.plugin2019.GameState;
 import sc.plugin2019.Move;
 import sc.plugin2019.util.GameRuleLogic;
@@ -21,7 +23,7 @@ public class MoveChooser {
 	 * Contains all Tactics and their importance
 	 * 
 	 */
-	static Map tacticsAndImportance = new HashMap();
+	static HashMap<Tactic, Double> tacticsAndImportance = new HashMap<Tactic, Double>();
 	// static double[] importance;
 	// static Tactic[] tactics;
 
@@ -39,7 +41,24 @@ public class MoveChooser {
 	 * @return value of the gamestate
 	 */
 	public static Triple<WinLoose, Double, Move> evaluateGamestate(GameState gamestate) {
-		return null;
+		Player winner = gamestate.getWinner();//TODO how to to this??? assumes that it returns null if there isn't a winner
+		Player currentPlayer = gamestate.getCurrentPlayer();
+		WinLoose wl;
+		if (winner == null) {
+			wl = WinLoose.NEUTRAL;
+			double rating = 0;
+			double devider = 0;
+			for(Map.Entry<Tactic, Double> entry : tacticsAndImportance.entrySet()) {
+				rating += entry.getValue() * entry.getKey().tacticRatesGameState(gamestate); 
+				devider += entry.getValue();
+			}
+			rating /= devider;
+			return new Triple<WinLoose, Double, Move>(wl,rating,null);
+			
+		}else {
+			return (winner == currentPlayer)? new Triple<WinLoose, Double, Move>(WinLoose.WIN,(double)100,null) : //Case win
+											  new Triple<WinLoose, Double, Move>(WinLoose.LOOSE,(double)100,null); //Case loose
+		}
 	}
 
 	/**
