@@ -130,7 +130,7 @@ public class Logic implements IGameHandler {
 	}
 
 	@SuppressWarnings("unused")
-	private GameState moveToGameState(GameState gs, Move m) {
+	public static GameState moveToGameState(GameState gs, Move m) {
 		GameState g = gs.clone();
 		try {
 			m.perform(g);

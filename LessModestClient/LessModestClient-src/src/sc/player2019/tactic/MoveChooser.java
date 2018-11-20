@@ -1,5 +1,6 @@
 package sc.player2019.tactic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class MoveChooser {
 		PlayerColor currentPlayer = gamestate.getCurrentPlayerColor();
 		WinState winstate = Logic.getWinState(gamestate, currentPlayer);
 		double rating = 0;
+		
 		switch(winstate) {
 		case NEUTRAL:
 			rating = 0;
@@ -69,16 +71,46 @@ public class MoveChooser {
 	/**
 	 * TODO Uses Alpha Beta search to find the best move
 	 * 
-	 * @param gametate
-	 * @param depth
+	 * @param gamestate
+	 * @param depth has to end on a even turn
 	 * @return Triple <br>
 	 *         first: Is this gamestate is a WIN, a LOOSE or NEUTRAL<br>
 	 *         second: What score does the move have<br>
 	 *         third: What Move leads to the best outcome
 	 * 
 	 */
-	public static Triple<WinState, Double, Move> alphaBeta(GameState gametate, int depth) {
-		return null;
+	public static Triple<WinState, Double, Move> alphaBeta(GameState gamestate, int depth) {
+		WinState ws = Logic.getWinState(gamestate, gamestate.getCurrentPlayerColor());
+		if(depth <= 0 || ws != null) {
+			return evaluateGamestate(gamestate);
+		}else {
+			ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gamestate);
+			Triple<WinState, Double, Move> worstForEnemyMoveTriple = alphaBeta(Logic.moveToGameState(gamestate,possibleMoves.get(0)),depth-1);
+			worstForEnemyMoveTriple.setThird(possibleMoves.get(0));
+			for(Move move : possibleMoves) {
+				if(worstForEnemyMoveTriple.getFirst()== WinState.LOOSE){
+					break;
+				}
+				Triple<WinState, Double, Move> currentMoveTriple = alphaBeta(Logic.moveToGameState(gamestate,move),depth-1);
+				if(worstForEnemyMoveTriple.getSecond() > currentMoveTriple.getSecond()) { // the lower the enemy score the better
+					worstForEnemyMoveTriple = currentMoveTriple;
+					
+				}
+			}
+			switch(worstForEnemyMoveTriple.getFirst()) {
+			case WIN:
+				worstForEnemyMoveTriple.setFirst(WinState.LOOSE);
+				break;
+			case LOOSE:
+				worstForEnemyMoveTriple.setFirst(WinState.WIN);
+				break;
+			case NEUTRAL:
+				worstForEnemyMoveTriple.setFirst(WinState.NEUTRAL);
+			}
+			worstForEnemyMoveTriple.setSecond(100-worstForEnemyMoveTriple.getSecond());
+			return worstForEnemyMoveTriple;
+			
+		}
 	}
 
 	public static void updateImportance() {
@@ -90,9 +122,9 @@ public class MoveChooser {
 
 
 class Triple<A, B, C> {
-	public final A first;
-	public final B second;
-	public final C third;
+	public  A first;
+	public  B second;
+	public  C third;
 
 	public Triple(A first, B second, C third) {
 		this.first = first;
@@ -110,6 +142,15 @@ class Triple<A, B, C> {
 
 	public C getThird() {
 		return third;
+	}
+	public void setFirst(A a) {
+		first = a;
+	}
+	public void setSecond(B b) {
+		second = b;
+	}
+	public void setThird(C c) {
+		third = c;
 	}
 
 }
