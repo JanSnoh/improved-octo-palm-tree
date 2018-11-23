@@ -140,7 +140,7 @@ public class Logic implements IGameHandler {
 		return g;
 	}
 	
-	/**TODO add playercolor input 
+	/**TODO copy from getWinner
 	 * and add wincondition for 30 turns ended.
 	 * !!!!!!!!
 	 * 

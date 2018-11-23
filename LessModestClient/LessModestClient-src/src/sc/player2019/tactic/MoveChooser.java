@@ -10,6 +10,9 @@ import sc.plugin2019.GameState;
 import sc.plugin2019.Move;
 import sc.plugin2019.util.GameRuleLogic;
 import sc.shared.PlayerColor;
+import sc.shared.WinCondition;
+import static sc.player2019.util.CheckWinCondition.checkWinCondition;
+import static sc.player2019.util.GameStateUtil.moveToGameState;
 
 /**
  * Does main calculation to choose a Move
@@ -40,13 +43,12 @@ public class MoveChooser {
 	 * @param gamestate
 	 * @return value of the gamestate
 	 */
-	public static Triple<WinState, Double, Move> evaluateGamestate(GameState gamestate) {
+	public static Triple<WinCondition, Double, Move> evaluateGamestate(GameState gamestate) {
 		PlayerColor currentPlayer = gamestate.getCurrentPlayerColor();
-		WinState winstate = Logic.getWinState(gamestate, currentPlayer);
+		WinCondition winCon = checkWinCondition(gamestate);
+		PlayerColor winningPlayer = winCon.getWinner();
 		double rating = 0;
-		
-		switch(winstate) {
-		case NEUTRAL:
+		if (winningPlayer == null) {
 			rating = 0;
 			double devider = 0;
 			for(Map.Entry<Tactic, Double> entry : tacticsAndImportance.entrySet()) {
@@ -54,18 +56,13 @@ public class MoveChooser {
 				devider += entry.getValue();
 			}
 			rating /= devider;//normalize rating so that importance = 1
-			break;
-			
-		case WIN:
-			rating = 100;// max value
-			break;
-			
-		case LOOSE:
-			rating = 0;// min value
+		}else if (currentPlayer.equals(winningPlayer)) {
+			rating = 100;
+		}else if (currentPlayer.opponent().equals(winningPlayer)) {
+			rating = 0;
 		}
-			
-		return new Triple<WinState, Double, Move>(winstate,rating,null);
-		
+
+		return new Triple<WinCondition, Double, Move>(winCon,rating,null);
 	}
 
 	/**
@@ -79,34 +76,28 @@ public class MoveChooser {
 	 *         third: What Move leads to the best outcome
 	 * 
 	 */
-	public static Triple<WinState, Double, Move> alphaBeta(GameState gamestate, int depth) {
+	public static Triple<WinCondition, Double, Move> alphaBeta(GameState gamestate, int depth) {
+		PlayerColor currentPlayer = gamestate.getCurrentPlayerColor();
 		WinState ws = Logic.getWinState(gamestate, gamestate.getCurrentPlayerColor());
 		if(depth <= 0 || ws != null) {
 			return evaluateGamestate(gamestate);
 		}else {
 			ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gamestate);
-			Triple<WinState, Double, Move> worstForEnemyMoveTriple = alphaBeta(Logic.moveToGameState(gamestate,possibleMoves.get(0)),depth-1);
+			Triple<WinCondition, Double, Move> worstForEnemyMoveTriple = alphaBeta(moveToGameState(gamestate,possibleMoves.get(0)),depth-1);
 			worstForEnemyMoveTriple.setThird(possibleMoves.get(0));
 			for(Move move : possibleMoves) {
-				if(worstForEnemyMoveTriple.getFirst()== WinState.LOOSE){
+				if(worstForEnemyMoveTriple.getFirst().equals(currentPlayer)){
 					break;
 				}
-				Triple<WinState, Double, Move> currentMoveTriple = alphaBeta(Logic.moveToGameState(gamestate,move),depth-1);
+				Triple<WinCondition, Double, Move> currentMoveTriple = alphaBeta(moveToGameState(gamestate,move),depth-1);
 				if(worstForEnemyMoveTriple.getSecond() > currentMoveTriple.getSecond()) { // the lower the enemy score the better
 					worstForEnemyMoveTriple = currentMoveTriple;
+					worstForEnemyMoveTriple.setThird(move);
 					
 				}
 			}
-			switch(worstForEnemyMoveTriple.getFirst()) {
-			case WIN:
-				worstForEnemyMoveTriple.setFirst(WinState.LOOSE);
-				break;
-			case LOOSE:
-				worstForEnemyMoveTriple.setFirst(WinState.WIN);
-				break;
-			case NEUTRAL:
-				worstForEnemyMoveTriple.setFirst(WinState.NEUTRAL);
-			}
+			//winne
+
 			worstForEnemyMoveTriple.setSecond(100-worstForEnemyMoveTriple.getSecond());
 			return worstForEnemyMoveTriple;
 			

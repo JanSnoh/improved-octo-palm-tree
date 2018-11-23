@@ -31,7 +31,7 @@ public abstract class Tactic {
 	
 	abstract Move getMove(GameState gs, PlayerColor c);
 	
-	protected GameState moveToGameState(GameState gs, Move m) {
+	static GameState moveToGameState(GameState gs, Move m) {
 		GameState g = gs.clone();
 		try {
 			m.perform(g);
