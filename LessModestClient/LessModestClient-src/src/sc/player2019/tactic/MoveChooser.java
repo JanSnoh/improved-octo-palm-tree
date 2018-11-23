@@ -30,9 +30,10 @@ public class MoveChooser {
 	// static double[] importance;
 	// static Tactic[] tactics;
 
-	// TODO well you know, like, code it.
 	static Move getBestMove(GameState gamestate) {
-		return null;
+		int depth = 2; //TODO 2 when going first 3 when going second.
+		Triple<WinCondition, Double, Move> bestMoveTriplet = alphaBeta(gamestate, depth);
+		return bestMoveTriplet.getThird();
 	}
 
 	/**
