@@ -31,16 +31,12 @@ public class MoveChooser {
 	// static Tactic[] tactics;
 
 	static Move getBestMove(GameState gamestate) {
-		int depth = 2; //TODO 2 when going first 3 when going second.
+		int depth = (gamestate.getCurrentPlayerColor() == PlayerColor.RED)? 2 : 3;
 		Triple<WinCondition, Double, Move> bestMoveTriplet = alphaBeta(gamestate, depth);
 		return bestMoveTriplet.getThird();
 	}
 
 	/**
-	 * TODO Lets all Tactics evaluate the gamestate (int 0 to 100) and multiplies it
-	 * by their importance and divides it by the sum of all importances, so that the
-	 * Importance is normalized to 1
-	 * 
 	 * @param gamestate
 	 * @return value of the gamestate
 	 */
@@ -67,7 +63,6 @@ public class MoveChooser {
 	}
 
 	/**
-	 * TODO Uses Alpha Beta search to find the best move
 	 * 
 	 * @param gamestate
 	 * @param depth has to end on a even turn
