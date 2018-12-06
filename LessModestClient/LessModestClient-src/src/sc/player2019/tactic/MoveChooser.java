@@ -29,8 +29,10 @@ public class MoveChooser {
 	static HashMap<Tactic, Double> tacticsAndImportance = new HashMap<Tactic, Double>();
 	// static double[] importance;
 	// static Tactic[] tactics;
+	
+	//TODO Setup, give mc the tactics. and importance.
 
-	static Move getBestMove(GameState gamestate) {
+	public static Move getBestMove(GameState gamestate) {
 		int depth = (gamestate.getCurrentPlayerColor() == PlayerColor.RED)? 2 : 3;
 		Triple<WinCondition, Double, Move> bestMoveTriplet = alphaBeta(gamestate, depth);
 		return bestMoveTriplet.getThird();
@@ -47,12 +49,12 @@ public class MoveChooser {
 		double rating = 0;
 		if (winningPlayer == null) {
 			rating = 0;
-			double devider = 0;
+			double divider = 0;
 			for(Map.Entry<Tactic, Double> entry : tacticsAndImportance.entrySet()) {
 				rating += entry.getValue() * entry.getKey().tacticRatesGameState(gamestate); 
-				devider += entry.getValue();
+				divider += entry.getValue();
 			}
-			rating /= devider;//normalize rating so that importance = 1
+			rating /= divider;//normalize rating so that importance = 1
 		}else if (currentPlayer.equals(winningPlayer)) {
 			rating = 100;
 		}else if (currentPlayer.opponent().equals(winningPlayer)) {
@@ -82,7 +84,7 @@ public class MoveChooser {
 			Triple<WinCondition, Double, Move> worstForEnemyMoveTriple = alphaBeta(moveToGameState(gamestate,possibleMoves.get(0)),depth-1);
 			worstForEnemyMoveTriple.setThird(possibleMoves.get(0));
 			for(Move move : possibleMoves) {
-				if(worstForEnemyMoveTriple.getFirst().equals(currentPlayer)){
+				if(worstForEnemyMoveTriple.getFirst().getWinner().equals(currentPlayer)){
 					break;
 				}
 				Triple<WinCondition, Double, Move> currentMoveTriple = alphaBeta(moveToGameState(gamestate,move),depth-1);
