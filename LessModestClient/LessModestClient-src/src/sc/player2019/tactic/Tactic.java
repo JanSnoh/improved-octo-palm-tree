@@ -29,6 +29,7 @@ public abstract class Tactic {
 	 */
 	abstract double tacticRatesGameState(GameState gamestate);
 	
+	//TODO stuff below here is not longer useful
 	abstract Move getMove(GameState gs, PlayerColor c);
 	
 	static GameState moveToGameState(GameState gs, Move m) {
