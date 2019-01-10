@@ -25,7 +25,6 @@ public class TacticMitte extends Tactic {
 	 * 
 	 */
 	public TacticMitte() {
-		name = Taktikname.MITTE;
 
 	}
 
