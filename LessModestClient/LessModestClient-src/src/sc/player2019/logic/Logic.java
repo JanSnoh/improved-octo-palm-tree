@@ -61,6 +61,7 @@ public class Logic implements IGameHandler {
 	/**
 	 * {@inheritDoc}
 	 */
+	//TODO replace with mochooser getMove() or sth. like this
 	@Override
 	public void onRequestAction() {
 		long startTime = System.currentTimeMillis();
@@ -115,7 +116,7 @@ public class Logic implements IGameHandler {
 	}
 
 	// Jan's Funktionen
-
+	//TODO delete
 	// Alternative deconcentration Funktion mit einfacherem Code
 	@SuppressWarnings("unused")
 	private double deconcentrationOfGameState(PlayerColor c, GameState gs) {
@@ -140,7 +141,7 @@ public class Logic implements IGameHandler {
 		return g;
 	}
 	
-	/**TODO copy from getWinner
+	/**TODO delete
 	 * and add wincondition for 30 turns ended.
 	 * !!!!!!!!
 	 * 
