@@ -17,9 +17,6 @@ import sc.shared.PlayerColor;
 //TODO @jan Add minSpread Tactic
 //TODO Decide where to put 'moveToGameState' and TacticMitte.'deconcentrationOfGameState'
 public abstract class Tactic {
-	
-	Taktikname name;
-	
 	Tactic(){
 	}
 	/**
