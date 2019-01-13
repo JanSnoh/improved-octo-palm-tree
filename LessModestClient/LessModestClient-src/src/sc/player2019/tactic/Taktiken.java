@@ -1,5 +1,7 @@
 package sc.player2019.tactic;
 
+import sc.plugin2019.GameState;
+
 public enum Taktiken {
 	
 	/*DEFAULT, RANDOM,*/ MITTE(new TacticMitte());//, MINSPREAD;
@@ -10,6 +12,9 @@ public enum Taktiken {
 	}
 	public Tactic getTactic(){
 		return tactic;
+	}
+	public double tacticRatesGameState(GameState gamestate) {
+		return tactic.tacticRatesGameState(gamestate);
 	}
 	
 }

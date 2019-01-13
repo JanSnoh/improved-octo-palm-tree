@@ -26,7 +26,7 @@ public class MoveChooser {
 	 * Contains all Tactics and their importance
 	 * 
 	 */
-	static HashMap<Tactic, Double> tacticsAndImportance = new HashMap<Tactic, Double>();
+	static HashMap<Taktiken, Double> tacticsAndImportance = new HashMap<Taktiken, Double>();
 	// static double[] importance;
 	// static Tactic[] tactics;
 	
@@ -50,7 +50,7 @@ public class MoveChooser {
 		if (winningPlayer == null) {
 			rating = 0;
 			double divider = 0;
-			for(Map.Entry<Tactic, Double> entry : tacticsAndImportance.entrySet()) {
+			for(Map.Entry<Taktiken, Double> entry : tacticsAndImportance.entrySet()) {
 				rating += entry.getValue() * entry.getKey().tacticRatesGameState(gamestate); 
 				divider += entry.getValue();
 			}
