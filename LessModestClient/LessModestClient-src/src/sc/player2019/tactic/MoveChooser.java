@@ -31,6 +31,9 @@ public class MoveChooser {
 	// static Tactic[] tactics;
 	
 	//TODO Setup, give mc the tactics. and importance.
+	static void setTacticsAndImportance(HashMap<Taktiken, Double> tap) {
+		tacticsAndImportance = tap;
+	}
 
 	public static Move getBestMove(GameState gamestate) {
 		int depth = (gamestate.getCurrentPlayerColor() == PlayerColor.RED)? 2 : 3;

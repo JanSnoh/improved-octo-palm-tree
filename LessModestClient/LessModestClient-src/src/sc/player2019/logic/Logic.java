@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sc.framework.plugins.Player;
 import sc.player2019.Starter;
+import sc.player2019.tactic.MoveChooser;
 import sc.plugin2019.Board;
 import sc.plugin2019.Field;
 import sc.plugin2019.GameState;
@@ -67,23 +68,7 @@ public class Logic implements IGameHandler {
 		long startTime = System.currentTimeMillis();
 		log.info("Es wurde ein Zug angefordert.");
 		PlayerColor c = currentPlayer.getColor();
-		ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gameState);
-		HashMap<Move, Double> deconMoves = new HashMap<>();
-		for (Move m : possibleMoves) {
-			deconMoves.put(m, deconcentrationOfGameState(c, moveToGameState(gameState, m)));
-		}
-
-		Collections.sort(possibleMoves, new Comparator<Move>() {
-			@Override
-			public int compare(Move move1, Move move2) {
-				double dc1 = deconMoves.get(move1);
-				double dc2 = deconMoves.get(move2);
-				return (dc1 < dc2) ? -1 : 1;
-			}
-		});
-
-		System.out.println(possibleMoves);
-		sendAction(possibleMoves.get(0));
+		sendAction(MoveChooser.getBestMove(gameState));
 
 	}
 
