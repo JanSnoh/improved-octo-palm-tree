@@ -10,6 +10,7 @@ public class GameStateUtil {
 		GameState g = gs.clone();
 		try {
 			m.perform(g);
+			
 		} catch (InvalidGameStateException | InvalidMoveException e) {
 			e.printStackTrace();
 		}
