@@ -3,10 +3,7 @@
  */
 package sc.player2019.tactic;
 
-import sc.plugin2019.*;
-import sc.shared.InvalidGameStateException;
-import sc.shared.InvalidMoveException;
-import sc.shared.PlayerColor;
+import sc.plugin2019.GameState;
 
 /**
  * @author jan
@@ -16,26 +13,18 @@ import sc.shared.PlayerColor;
 //TODO Add more Tactics
 //TODO @jan Add minSpread Tactic
 //TODO Decide where to put 'moveToGameState' and TacticMitte.'deconcentrationOfGameState'
-public abstract class Tactic {
-	Tactic(){
-	}
+public interface Tactic {
+	public static final  double maxRating = 1;
+	public static final double minRating = 0;
 	/**
 	 * @author Kajus
 	 * @param gamestate
-	 * @return the rating of given gamestate in the range from 0 to 100 where 0 is the worst
+	 * @return the rating of given gamestate in the range from 0 to maxRating where 0 is the worst
 	 */
-	abstract double tacticRatesGameState(GameState gamestate);
+	double tacticRatesGameState(GameState gamestate, GameState oldGameState);
 	
-	//TODO stuff below here is not longer useful
-	abstract Move getMove(GameState gs, PlayerColor c);
-	
-	static GameState moveToGameState(GameState gs, Move m) {
-		GameState g = gs.clone();
-		try {
-			m.perform(g);
-		} catch (InvalidGameStateException | InvalidMoveException e) {
-			e.printStackTrace();
-		}
-		return g;
+	default double getImportance(GameState gamestate) {
+		return 1;
 	}
+	
 }

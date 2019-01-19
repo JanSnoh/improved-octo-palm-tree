@@ -2,9 +2,11 @@ package sc.player2019.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import sc.framework.plugins.Player;
 import sc.player2019.Starter;
 import sc.player2019.tactic.MoveChooser;
+import sc.player2019.tactic.Taktiken;
 import sc.plugin2019.Board;
 import sc.plugin2019.Field;
 import sc.plugin2019.GameState;
@@ -16,19 +18,6 @@ import sc.shared.InvalidGameStateException;
 import sc.shared.InvalidMoveException;
 import sc.shared.PlayerColor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-import java.lang.Math;
-
 /**
  * Das Herz des Clients: Eine sehr simple Logik, die ihre Zuege zufaellig
  * waehlt, aber gueltige Zuege macht. Ausserdem werden zum Spielverlauf
@@ -39,6 +28,7 @@ public class Logic implements IGameHandler {
 	private Starter client;
 	private GameState gameState;
 	private Player currentPlayer;
+	private MoveChooser moveChooser;
 
 	private static final Logger log = LoggerFactory.getLogger(Logic.class);
 
@@ -50,6 +40,8 @@ public class Logic implements IGameHandler {
 	 */
 	public Logic(Starter client) {
 		this.client = client;
+		moveChooser = new MoveChooser();
+		
 	}
 
 	/**
@@ -68,7 +60,12 @@ public class Logic implements IGameHandler {
 		long startTime = System.currentTimeMillis();
 		log.info("Es wurde ein Zug angefordert.");
 		PlayerColor c = currentPlayer.getColor();
-		sendAction(MoveChooser.getBestMove(gameState));
+		Move bestMove =moveChooser.getBestMove(gameState);
+		GameState newGameState = moveToGameState(gameState, bestMove);
+		log.info("Weahy" +Taktiken.MITTE.tacticRatesGameState(newGameState, gameState));
+		sendAction(bestMove);
+		
+		log.info("Fast as " + (System.currentTimeMillis()-startTime));
 
 	}
 
@@ -126,25 +123,6 @@ public class Logic implements IGameHandler {
 		return g;
 	}
 	
-	/**TODO delete
-	 * and add wincondition for 30 turns ended.
-	 * !!!!!!!!
-	 * 
-	 * @param gs
-	 * @return
-	 */
-	public static WinState getWinState(GameState gs, PlayerColor c) {
-		if(GameRuleLogic.isSwarmConnected(gs.getBoard(), c)) {
-			return WinState.WIN;
-		} else if(GameRuleLogic.isSwarmConnected(gs.getBoard(), c.opponent())) {
-			return WinState.LOOSE;
-		}	else {
-			return WinState.NEUTRAL;
-		}
-		
-		
-	
-	}
 	
 	
 

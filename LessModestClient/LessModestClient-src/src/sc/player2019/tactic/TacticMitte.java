@@ -3,23 +3,16 @@
  */
 package sc.player2019.tactic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-
 import sc.plugin2019.Board;
 import sc.plugin2019.Field;
 import sc.plugin2019.GameState;
-import sc.plugin2019.Move;
 import sc.plugin2019.util.GameRuleLogic;
-import sc.shared.PlayerColor;
 
 /**
  * @author jan
  *
  */
-public class TacticMitte extends Tactic {
+public class TacticMitte implements Tactic {
 
 	/**
 	 * 
@@ -27,7 +20,7 @@ public class TacticMitte extends Tactic {
 	public TacticMitte() {
 
 	}
-
+	/*
 	@Override
 	Move getMove(GameState gs, PlayerColor c) {
 		ArrayList<Move> possibleMoves = GameRuleLogic.getPossibleMoves(gs);
@@ -49,27 +42,23 @@ public class TacticMitte extends Tactic {
 		return possibleMoves.get(0);
 		
 	}
+	*/
 
 	
-	/*
-	Sollte die Funktion hier rein, in Tactic oder villeicht sogar in Logic bleiben?
-	Fragen, Fragen, Fragen.
-	*/
-	private float deconcentrationOfGameState(PlayerColor c, GameState gs) {
-		Board b = gs.getBoard();
-		float dist = 0;
-		for (Field f : GameRuleLogic.getOwnFields(b, c)) {
-			float dx = (float) (4.5 - f.getX());
-			float dy = (float) (4.5 - f.getY());
-			dist += Math.pow((dx * dx + dy * dy), 0.5); // Without Math everything crumbles to pieces
-		}
-		return dist;
-	}
+
 
 	@Override
-	double tacticRatesGameState(GameState gamestate) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double tacticRatesGameState(GameState gamestate, GameState oldGameState) {
+		Board board = gamestate.getBoard();
+		double rating = 0;
+		for (Field f : GameRuleLogic.getOwnFields(board, gamestate.getCurrentPlayerColor())) {
+			float dx = (float) (4.5 - f.getX());
+			float dy = (float) (4.5 - f.getY());
+			rating += Math.pow((dx * dx + dy * dy), 0.5);
+		}
+		rating =1/(1+Math.pow(Math.E,(rating*0.07-2))); //Sigmoid stuf with parameters
+		
+		return rating;
 	}
 
 }
