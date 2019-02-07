@@ -6,7 +6,7 @@ import sc.plugin2019.GameState;
 import sc.plugin2019.util.GameRuleLogic;
 import sc.shared.PlayerColor;
 
-public class TacticDMidde implements Tactic{
+public class TacticDMitte implements Tactic{
 
 	@Override
 	public double tacticRatesGameState(GameState gamestate, GameState oldGameState) {
@@ -22,17 +22,18 @@ public class TacticDMidde implements Tactic{
 		for (Field f : GameRuleLogic.getOwnFields(boardNew, me)) {
 			double dx = (double) (4.5 - f.getX());
 			double dy = (double) (4.5 - f.getY());
-			distNew += dx+dy;
-			//distNew += Math.pow((dx * dx + dy * dy), 0.5);
+			///distNew += dx+dy;
+			distNew += Math.pow((dx * dx + dy * dy), 0.5);
 		}
 		
 		for (Field f : GameRuleLogic.getOwnFields(boardOld, me)) {
 			double dx = (double) (4.5 - f.getX());
 			double dy = (double) (4.5 - f.getY());
-			distOld += dx + dy;
-			//distOld += Math.pow((dx * dx + dy * dy), 0.5);
+			//distOld += dx + dy;
+			distOld += Math.pow((dx * dx + dy * dy), 0.5);
 		}
 		//assert (distOld-distNew<=7);
+		System.out.println("distOld: "+distOld+"\n distNew:"+distNew);
 		return (distOld-distNew);
 	}
 }

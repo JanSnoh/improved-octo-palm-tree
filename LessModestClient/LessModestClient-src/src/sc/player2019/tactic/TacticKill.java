@@ -15,7 +15,7 @@ public class TacticKill implements Tactic{
 		Board board = gamestate.getBoard();
 		Set<Field> fields = GameRuleLogic.getOwnFields(board,gamestate.getOtherPlayerColor());
 		double t = fields.size();
-		return 1.0-1.0/16.0*t;
+		return 1.0-t/16;
 	}
 	@Override
 	public double getImportance(GameState gamestate) {

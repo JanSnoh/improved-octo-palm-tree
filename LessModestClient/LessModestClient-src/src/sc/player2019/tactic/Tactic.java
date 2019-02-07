@@ -21,7 +21,7 @@ public interface Tactic {
 	 * @param gamestate
 	 * @return the rating of given gamestate in the range from 0 to maxRating where 0 is the worst
 	 */
-	double tacticRatesGameState(GameState gamestate, GameState oldGameState);
+	public double tacticRatesGameState(GameState gamestate, GameState oldGameState);
 	
 	default double getImportance(GameState gamestate) {
 		return 1;

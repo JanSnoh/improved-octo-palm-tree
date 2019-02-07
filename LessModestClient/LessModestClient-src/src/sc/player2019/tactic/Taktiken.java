@@ -4,7 +4,7 @@ import sc.plugin2019.GameState;
 
 public enum Taktiken {
 	
-	/*DEFAULT, RANDOM,*/MITTE(new TacticDMidde());//, MITTE(new TacticDMidde());//, MINSPREAD;
+	/*DEFAULT, RANDOM,*/MITTE(new TacticKill());//, MITTE(new TacticDMitte());//, MINSPREAD;
 	
 	Tactic tactic;
 	double importance;

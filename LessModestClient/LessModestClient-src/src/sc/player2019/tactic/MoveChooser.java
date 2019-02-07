@@ -21,7 +21,11 @@ import sc.shared.WinCondition;
  * @version 1
  */
 public class MoveChooser {
-
+	/*FIXME Big massive Error either here or in GameStateUtilities 
+	The error causes gameState and oldGameState to be (almost) the same so that differences detected by TacticDMitte
+	are in the order of magnitude of E-14. 
+	
+	*/
 	public MoveChooser() {
 	}
 
@@ -29,7 +33,7 @@ public class MoveChooser {
 	// static Tactic[] tactics;
 
 	public Move getBestMove(GameState gamestate) {
-		int depth = (gamestate.getCurrentPlayerColor() == PlayerColor.RED) ? 2 : 3;
+		int depth = (gamestate.getCurrentPlayerColor() == PlayerColor.RED) ? 1 : 2; //TODO after debugs 2:3
 		Triple<WinCondition, Double, Move> bestMoveTriplet = alphaBeta(gamestate, null, depth);
 		return bestMoveTriplet.getThird();
 	}
